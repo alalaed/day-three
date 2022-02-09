@@ -1,14 +1,14 @@
-import { Card } from "react-bootstrap";
+import { Card, Col } from "react-bootstrap";
 const SingleBook = (props) => {
   return (
-    <div>
+    <Col md={4} key={props.branding3}>
       <Card style={{ width: "18rem" }}>
-        <Card.Img variant="top" src={props.image} />
+        <Card.Img variant="top" src={props.branding2} />
         <Card.Body>
-          <Card.Title>{props.title}</Card.Title>
+          <Card.Title>{props.branding}</Card.Title>
         </Card.Body>
       </Card>
-    </div>
+    </Col>
   );
 };
 
