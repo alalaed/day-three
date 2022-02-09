@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <WarningSign string="Ali" />
-      <MyBadge text="This is Ali" color="primary" />
+      <MyBadge text="This is Ali" color="secondary" />
     </div>
   );
 }
