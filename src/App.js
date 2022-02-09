@@ -15,7 +15,7 @@ function App() {
       <WarningSign string="Ali" />
       <MyBadge text="hi giorgio" color="primary" />
       {/* <SingleBook title={title} image={img} /> */}
-      <BookList branding4={books} />
+      <BookList category={books} />
     </div>
   );
 }

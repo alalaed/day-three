@@ -5,12 +5,8 @@ const BookList = (props) => {
   return (
     <Container>
       <Row>
-        {props.branding4.map((book) => (
-          <SingleBook
-            branding={book.title}
-            branding2={book.img}
-            branding3={book.asin}
-          />
+        {props.category.map((book) => (
+          <SingleBook name={book.title} image={book.img} id={book.asin} />
         ))}
       </Row>
     </Container>
