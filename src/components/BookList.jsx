@@ -9,7 +9,7 @@ const BookList = (props) => {
           <SingleBook
             branding={book.title}
             branding2={book.img}
-            branding3={book.id}
+            branding3={book.asin}
           />
         ))}
       </Row>
