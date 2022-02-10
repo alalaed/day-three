@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Modal, Alert, Button, ListGroup, Badge } from "react-bootstrap";
+import { Modal, Alert, Button, ListGroup, Badge, Form } from "react-bootstrap";
 
 class CommentArea extends Component {
   componentDidMount = async () => {
@@ -24,7 +24,30 @@ class CommentArea extends Component {
   };
 
   state = {
+    comment: "",
+    rate: "",
     previousComments: [],
+  };
+
+  submitComment = (e) => {
+    e.preventDefault();
+    let httpFetch =
+      "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
+    fetch(httpFetch, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
+      },
+      body: JSON.stringify({
+        comment: this.state.comment,
+        rate: this.state.rate,
+        elementId: this.props.id,
+      }),
+    })
+      .then((response) => response.json)
+      .then((data) => console.log(data));
   };
 
   render() {
@@ -45,11 +68,29 @@ class CommentArea extends Component {
               </ListGroup.Item>
             ))}
           </ListGroup>
+
+          <Form.Control
+            type="text"
+            placeholder="comment"
+            value={this.state.comment}
+            onChange={(e) =>
+              this.setState({ ...this.state, comment: e.target.value })
+            }
+          />
+          <Form.Control
+            type="text"
+            placeholder="rate"
+            value={this.state.rate}
+            onChange={(e) =>
+              this.setState({ ...this.state, rate: e.target.value })
+            }
+          />
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary">Close</Button>
-          <Button variant="primary">Save changes</Button>
+          <Button variant="primary" onClick={(e) => this.submitComment(e)}>
+            Submit
+          </Button>
         </Modal.Footer>
       </Modal.Dialog>
     );
