@@ -22,10 +22,7 @@ class SingleBook extends Component {
       });
       if (response.ok) {
         let data = await response.json();
-        this.setState({
-          ...this.state,
-          previousComments: data,
-        });
+        this.setState({ ...this.state, previousComments: data });
       } else {
         <Alert variant="danger">OOPS!!!</Alert>;
       }
@@ -34,7 +31,8 @@ class SingleBook extends Component {
     }
   };
 
-  submitComment = () => {
+  submitComment = (e) => {
+    e.preventDefault();
     let httpFetch =
       "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
     fetch(httpFetch, {
@@ -57,27 +55,23 @@ class SingleBook extends Component {
   render() {
     return (
       <Card
-        onClick={() =>
-          this.setState({ ...this.state, selected: !this.state.selected })
-        }
         style={{
           minHeight: "40rem",
           border: this.state.selected ? "3px red solid" : "none",
         }}
       >
         <Card.Img
+          onClick={() =>
+            this.setState({ ...this.state, selected: !this.state.selected })
+          }
           style={{ objectFit: "cover" }}
           variant="top"
           src={this.props.image}
-          // { {this.setState({ id: this.props.id })} }
         />
         <Card.Body>
           <Card.Title>{this.props.title}</Card.Title>
           {this.state.selected && (
-            <Form
-              key={this.props.id}
-              // style={{ position: "absolute", zIndex: "100" }}
-            >
+            <Form key={this.props.id}>
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
@@ -98,32 +92,30 @@ class SingleBook extends Component {
                     this.setState({ ...this.state, rate: e.target.value })
                   }
                 />
-                <Button variant="primary" onClick={(e) => this.submitComment()}>
+                <Button
+                  variant="primary"
+                  onClick={(e) => this.submitComment(e)}
+                >
                   Submit
                 </Button>
               </Form.Group>
-              <ListGroup as="ol" numbered>
+              <ListGroup as="ol">
                 <h4>Previous Comments</h4>
-                <ListGroup.Item
-                  as="li"
-                  className=" justify-content-between align-items-start"
-                  key={this.props.id}
-                >
-                  {this.state.previousComments.map((comment) => (
-                    <>
-                      <ListGroup.Item as="li">
-                        {comment.comment}
-                        <Badge variant="primary" pill>
-                          {comment.rate}
-                        </Badge>
-                      </ListGroup.Item>
-                      {/* <div className="ms-2 me-auto">{comment.comment}</div>
+
+                {this.state.previousComments.map((comment) => (
+                  <>
+                    <ListGroup.Item as="li" key={this.props.id}>
+                      {comment.comment}
+                      <Badge variant="primary" pill>
+                        {comment.rate}
+                      </Badge>
+                    </ListGroup.Item>
+                    {/* <div className="ms-2 me-auto">{comment.comment}</div>
                       <Badge variant="primary" pill>
                         {comment.rate}
                       </Badge> */}
-                    </>
-                  ))}
-                </ListGroup.Item>
+                  </>
+                ))}
               </ListGroup>
             </Form>
           )}
