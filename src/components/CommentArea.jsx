@@ -24,29 +24,33 @@ class CommentArea extends Component {
   };
 
   state = {
-    comment: "",
-    rate: "",
+    comments: {
+      comment: "",
+      rate: "",
+      elementId: "",
+    },
+
     previousComments: [],
   };
 
-  submitComment = (e) => {
-    e.preventDefault();
+  handleSubmit = (e) => {
+    // e.preventDefault();
     let httpFetch =
       "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
     fetch(httpFetch, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
-      },
+      method: "POST",
       body: JSON.stringify({
         comment: this.state.comment,
         rate: this.state.rate,
         elementId: this.props.id,
       }),
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
+        "Content-type": "application/json",
+      },
     })
-      .then((response) => response.json)
+      .then((response) => response.json())
       .then((data) => console.log(data));
   };
 
@@ -60,7 +64,7 @@ class CommentArea extends Component {
         <Modal.Body>
           <ListGroup>
             {this.state.previousComments.map((comment) => (
-              <ListGroup.Item>
+              <ListGroup.Item key={comment._id}>
                 {comment.comment}
                 <Badge variant="primary" pill>
                   {comment.rate}
@@ -88,7 +92,7 @@ class CommentArea extends Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" onClick={(e) => this.submitComment(e)}>
+          <Button variant="primary" onClick={(e) => this.handleSubmit(e)}>
             Submit
           </Button>
         </Modal.Footer>
