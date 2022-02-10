@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <WarningSign string="Ali" />
-      <MyBadge text="hi giorgio" color="primary" />
+      <MyBadge text="hi Ali" color="primary" />
       {/* <SingleBook title={title} image={img} /> */}
 
       <BookList category={books} />

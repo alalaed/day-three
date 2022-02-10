@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Container, Row, Form } from "react-bootstrap";
-import SingleBook from "./SingleBook";
+import SingleBook2 from "./SingleBook";
 
 class BookList extends Component {
   state = {
@@ -33,7 +33,11 @@ class BookList extends Component {
             {this.props.category
               .filter((b) => b.title.toLowerCase().includes(this.state.query))
               .map((book) => (
-                <SingleBook name={book.title} image={book.img} id={book.asin} />
+                <SingleBook2
+                  name={book.title}
+                  image={book.img}
+                  id={book.asin}
+                />
               ))}
           </Row>
         </Container>
