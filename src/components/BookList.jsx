@@ -25,7 +25,7 @@ class BookList extends Component {
           {this.props.array
             .filter((b) => b.title.toLowerCase().includes(this.state.query))
             .map((book) => (
-              <Col md={4}>
+              <Col md={4} key={book.asin}>
                 <SingleBook title={book.title} image={book.img} />
               </Col>
             ))}
