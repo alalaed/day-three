@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Modal, Alert, Button, ListGroup, Badge, Form } from "react-bootstrap";
+import DeleteButton from "./DeleteButton";
 
 class CommentArea extends Component {
   componentDidMount = async () => {
@@ -35,8 +36,7 @@ class CommentArea extends Component {
 
   handleSubmit = (e) => {
     // e.preventDefault();
-    let httpFetch =
-      "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
+    let httpFetch = "https://striveschool-api.herokuapp.com/api/comments/";
     fetch(httpFetch, {
       method: "POST",
       body: JSON.stringify({
@@ -69,6 +69,7 @@ class CommentArea extends Component {
                 <Badge variant="primary" pill>
                   {comment.rate}
                 </Badge>
+                <DeleteButton />
               </ListGroup.Item>
             ))}
           </ListGroup>
