@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Card, Form, ListGroup, Badge, Alert } from "react-bootstrap";
+import { Card, Form, ListGroup, Badge, Alert, Button } from "react-bootstrap";
 
 class SingleBook extends Component {
   state = {
@@ -11,19 +11,19 @@ class SingleBook extends Component {
   };
 
   componentDidMount = async () => {
+    let httpFetch =
+      "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
     try {
-      let response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/comments/",
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
-          },
-        }
-      );
+      let response = await fetch(httpFetch, {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
+        },
+      });
       if (response.ok) {
         let data = await response.json();
         this.setState({
+          ...this.state,
           previousComments: data,
         });
       } else {
@@ -33,24 +33,51 @@ class SingleBook extends Component {
       console.log(error);
     }
   };
+
+  submitComment = () => {
+    let httpFetch =
+      "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
+    fetch(httpFetch, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
+      },
+      body: JSON.stringify({
+        comment: this.state.comment,
+        rate: this.state.rate,
+        elementId: this.props.id,
+      }),
+    })
+      .then((response) => response.json)
+      .then((data) => console.log(data));
+  };
+
   render() {
     return (
       <Card
-        onClick={() => this.setState({ selected: !this.state.selected })}
+        onClick={() =>
+          this.setState({ ...this.state, selected: !this.state.selected })
+        }
         style={{
-          height: "40rem",
+          minHeight: "40rem",
           border: this.state.selected ? "3px red solid" : "none",
         }}
       >
         <Card.Img
-          style={{ height: "20rem", objectFit: "cover" }}
+          style={{ objectFit: "cover" }}
           variant="top"
           src={this.props.image}
+          // { {this.setState({ id: this.props.id })} }
         />
         <Card.Body>
           <Card.Title>{this.props.title}</Card.Title>
           {this.state.selected && (
-            <Form key={this.props.asin}>
+            <Form
+              key={this.props.id}
+              // style={{ position: "absolute", zIndex: "100" }}
+            >
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
@@ -59,26 +86,43 @@ class SingleBook extends Component {
                   type="text"
                   placeholder="comment"
                   value={this.state.comment}
-                  onChange={(e) => this.setState({ comment: e.target.value })}
+                  onChange={(e) =>
+                    this.setState({ ...this.state, comment: e.target.value })
+                  }
                 />
                 <Form.Control
                   type="text"
                   placeholder="rate"
                   value={this.state.rate}
-                  onChange={(e) => this.setState({ rate: e.target.value })}
+                  onChange={(e) =>
+                    this.setState({ ...this.state, rate: e.target.value })
+                  }
                 />
+                <Button variant="primary" onClick={(e) => this.submitComment()}>
+                  Submit
+                </Button>
               </Form.Group>
-              <ListGroup>
+              <ListGroup as="ol" numbered>
                 <h4>Previous Comments</h4>
                 <ListGroup.Item
                   as="li"
-                  className="d-flex justify-content-between align-items-start"
-                  key={this.props.asin}
+                  className=" justify-content-between align-items-start"
+                  key={this.props.id}
                 >
-                  <div className="ms-2 me-auto">Nice!!!</div>
-                  <Badge variant="primary" pill>
-                    14
-                  </Badge>
+                  {this.state.previousComments.map((comment) => (
+                    <>
+                      <ListGroup.Item as="li">
+                        {comment.comment}
+                        <Badge variant="primary" pill>
+                          {comment.rate}
+                        </Badge>
+                      </ListGroup.Item>
+                      {/* <div className="ms-2 me-auto">{comment.comment}</div>
+                      <Badge variant="primary" pill>
+                        {comment.rate}
+                      </Badge> */}
+                    </>
+                  ))}
                 </ListGroup.Item>
               </ListGroup>
             </Form>
