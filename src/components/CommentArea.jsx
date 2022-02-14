@@ -1,9 +1,18 @@
 import { Component } from "react";
 import { Modal, Alert, Button, ListGroup, Badge, Form } from "react-bootstrap";
-import DeleteButton from "./DeleteButton";
 
 class CommentArea extends Component {
-  componentDidMount = async () => {
+  state = {
+    comments: {
+      comment: "",
+      rate: "",
+      elementId: "",
+    },
+
+    previousComments: [],
+  };
+
+  getApi = async () => {
     let httpFetch =
       "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
     try {
@@ -16,6 +25,7 @@ class CommentArea extends Component {
       if (response.ok) {
         let data = await response.json();
         this.setState({ ...this.state, previousComments: data });
+        console.log(this.state.previousComments);
       } else {
         <Alert variant="danger">OOPS!!!</Alert>;
       }
@@ -23,15 +33,14 @@ class CommentArea extends Component {
       console.log(error);
     }
   };
+  componentDidMount = async () => {
+    this.getApi();
+  };
 
-  state = {
-    comments: {
-      comment: "",
-      rate: "",
-      elementId: "",
-    },
-
-    previousComments: [],
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.id !== this.props.id) {
+      this.getApi();
+    }
   };
 
   handleSubmit = (e) => {
@@ -69,7 +78,6 @@ class CommentArea extends Component {
                 <Badge variant="primary" pill>
                   {comment.rate}
                 </Badge>
-                <DeleteButton />
               </ListGroup.Item>
             ))}
           </ListGroup>

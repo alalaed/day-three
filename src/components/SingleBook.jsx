@@ -4,14 +4,14 @@ import CommentArea from "./CommentArea";
 
 class SingleBook extends Component {
   state = {
-    selected: false,
+    selected: this.props.state,
   };
 
   render() {
     return (
       <Card
+        onClick={(e) => this.props.changeId(this.props.id)}
         style={{
-          minHeight: "40rem",
           border: this.state.selected ? "3px red solid" : "none",
         }}
       >
@@ -26,7 +26,7 @@ class SingleBook extends Component {
         <Card.Body>
           <Card.Title>{this.props.title}</Card.Title>
         </Card.Body>
-        {this.state.selected && <CommentArea id={this.props.id} />}
+        {/* {this.state.selected && <CommentArea id={this.props.id} />} */}
       </Card>
     );
   }
