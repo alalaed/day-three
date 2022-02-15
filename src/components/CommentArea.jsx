@@ -2,16 +2,6 @@ import { useEffect, useState } from "react";
 import { Modal, Alert, Button, ListGroup, Badge, Form } from "react-bootstrap";
 
 const CommentArea = ({ id }) => {
-  // state = {
-  //   comments: {
-  //     comment: "",
-  //     rate: "",
-  //     elementId: "",
-  //   },
-
-  //   previousComments: [],
-  // };
-
   const [comments, setComments] = useState({
     comment: "",
     rate: "",
@@ -31,7 +21,6 @@ const CommentArea = ({ id }) => {
       });
       if (response.ok) {
         let data = await response.json();
-        // this.setState({ ...this.state, previousComments: data });
         setPreviousComments(data);
       } else {
         <Alert variant="danger">OOPS!!!</Alert>;
@@ -40,17 +29,8 @@ const CommentArea = ({ id }) => {
       console.log(error);
     }
   };
-  // componentDidMount = async () => {
-  //   this.getApi();
-  // };
 
   useEffect(() => getApi(), []);
-
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   if (prevProps.chosenId !== this.props.chosenId) {
-  //     this.getApi();
-  //   }
-  // };
 
   useEffect(() => getApi(), [id]);
 
@@ -73,7 +53,19 @@ const CommentArea = ({ id }) => {
       .then((response) => response.json())
       .then((data) => console.log(data));
   };
+  const deleteComment = (deletedId) => {
+    let httpFetch =
+      "https://striveschool-api.herokuapp.com/api/comments/" + deletedId;
+    fetch(httpFetch, {
+      method: "DELETE",
 
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
+        "Content-type": "application/json",
+      },
+    });
+  };
   return (
     <Modal.Dialog>
       <Modal.Header closeButton>
@@ -85,9 +77,16 @@ const CommentArea = ({ id }) => {
           {previousComments.map((comment) => (
             <ListGroup.Item key={comment._id}>
               {comment.comment}
-              <Badge variant="primary" pill>
+              <Badge className="ml-2" variant="primary" pill>
                 {comment.rate}
               </Badge>
+              <Button
+                className="ml-2"
+                variant="danger"
+                onClick={(e) => deleteComment(comment._id)}
+              >
+                DEL
+              </Button>
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -97,18 +96,14 @@ const CommentArea = ({ id }) => {
           placeholder="comment"
           value={comments.comment}
           onChange={(e) =>
-            // this.setState({ ...this.state, comment: e.target.value })
-            setComments(...comments, { comment: e.target.value })
+            setComments({ ...comments, comment: e.target.value })
           }
         />
         <Form.Control
           type="text"
           placeholder="rate"
           value={comments.rate}
-          onChange={(e) =>
-            // this.setState({ ...this.state, rate: e.target.value })
-            setComments(...comments, { rate: e.target.value })
-          }
+          onChange={(e) => setComments({ ...comments, rate: e.target.value })}
         />
       </Modal.Body>
 
