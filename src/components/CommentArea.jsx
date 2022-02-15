@@ -1,20 +1,27 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Alert, Button, ListGroup, Badge, Form } from "react-bootstrap";
 
-class CommentArea extends Component {
-  state = {
-    comments: {
-      comment: "",
-      rate: "",
-      elementId: "",
-    },
+const CommentArea = ({ id }) => {
+  // state = {
+  //   comments: {
+  //     comment: "",
+  //     rate: "",
+  //     elementId: "",
+  //   },
 
-    previousComments: [],
-  };
+  //   previousComments: [],
+  // };
 
-  getApi = async () => {
-    let httpFetch =
-      "https://striveschool-api.herokuapp.com/api/comments/" + this.props.id;
+  const [comments, setComments] = useState({
+    comment: "",
+    rate: "",
+    elementId: "",
+  });
+
+  const [previousComments, setPreviousComments] = useState([]);
+
+  const getApi = async () => {
+    let httpFetch = "https://striveschool-api.herokuapp.com/api/comments/" + id;
     try {
       let response = await fetch(httpFetch, {
         headers: {
@@ -24,8 +31,8 @@ class CommentArea extends Component {
       });
       if (response.ok) {
         let data = await response.json();
-        this.setState({ ...this.state, previousComments: data });
-        console.log(this.state.previousComments);
+        // this.setState({ ...this.state, previousComments: data });
+        setPreviousComments(data);
       } else {
         <Alert variant="danger">OOPS!!!</Alert>;
       }
@@ -33,25 +40,29 @@ class CommentArea extends Component {
       console.log(error);
     }
   };
-  componentDidMount = async () => {
-    this.getApi();
-  };
+  // componentDidMount = async () => {
+  //   this.getApi();
+  // };
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.id !== this.props.id) {
-      this.getApi();
-    }
-  };
+  useEffect(() => getApi(), []);
 
-  handleSubmit = (e) => {
-    // e.preventDefault();
+  // componentDidUpdate = (prevProps, prevState) => {
+  //   if (prevProps.chosenId !== this.props.chosenId) {
+  //     this.getApi();
+  //   }
+  // };
+
+  useEffect(() => getApi(), [id]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     let httpFetch = "https://striveschool-api.herokuapp.com/api/comments/";
     fetch(httpFetch, {
       method: "POST",
       body: JSON.stringify({
-        comment: this.state.comment,
-        rate: this.state.rate,
-        elementId: this.props.id,
+        comment: comments.comment,
+        rate: comments.rate,
+        elementId: id,
       }),
       headers: {
         Authorization:
@@ -63,50 +74,50 @@ class CommentArea extends Component {
       .then((data) => console.log(data));
   };
 
-  render() {
-    return (
-      <Modal.Dialog>
-        <Modal.Header closeButton>
-          <Modal.Title>Reviews</Modal.Title>
-        </Modal.Header>
+  return (
+    <Modal.Dialog>
+      <Modal.Header closeButton>
+        <Modal.Title>Reviews</Modal.Title>
+      </Modal.Header>
 
-        <Modal.Body>
-          <ListGroup>
-            {this.state.previousComments.map((comment) => (
-              <ListGroup.Item key={comment._id}>
-                {comment.comment}
-                <Badge variant="primary" pill>
-                  {comment.rate}
-                </Badge>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+      <Modal.Body>
+        <ListGroup>
+          {previousComments.map((comment) => (
+            <ListGroup.Item key={comment._id}>
+              {comment.comment}
+              <Badge variant="primary" pill>
+                {comment.rate}
+              </Badge>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
 
-          <Form.Control
-            type="text"
-            placeholder="comment"
-            value={this.state.comment}
-            onChange={(e) =>
-              this.setState({ ...this.state, comment: e.target.value })
-            }
-          />
-          <Form.Control
-            type="text"
-            placeholder="rate"
-            value={this.state.rate}
-            onChange={(e) =>
-              this.setState({ ...this.state, rate: e.target.value })
-            }
-          />
-        </Modal.Body>
+        <Form.Control
+          type="text"
+          placeholder="comment"
+          value={comments.comment}
+          onChange={(e) =>
+            // this.setState({ ...this.state, comment: e.target.value })
+            setComments(...comments, { comment: e.target.value })
+          }
+        />
+        <Form.Control
+          type="text"
+          placeholder="rate"
+          value={comments.rate}
+          onChange={(e) =>
+            // this.setState({ ...this.state, rate: e.target.value })
+            setComments(...comments, { rate: e.target.value })
+          }
+        />
+      </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="primary" onClick={(e) => this.handleSubmit(e)}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal.Dialog>
-    );
-  }
-}
+      <Modal.Footer>
+        <Button variant="primary" onClick={(e) => handleSubmit(e)}>
+          Submit
+        </Button>
+      </Modal.Footer>
+    </Modal.Dialog>
+  );
+};
 export default CommentArea;
