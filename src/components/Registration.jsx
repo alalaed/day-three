@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
+import Username from "./Username";
+import User from "./User";
+import Card from "./Card";
+import Address from "./Address";
 
 const Registration = () => {
   const [name, SetName] = useState();
@@ -24,90 +28,35 @@ const Registration = () => {
               className="mb-3"
               controlId="exampleForm.ControlInput1"
             >
-              <Form.Control
-                onChange={(e) => SetName(e.target.value)}
-                value={name}
-                required
-                className="mb-2 mt-2"
-                type="text"
-                placeholder="Name"
+              <User
+                name={name}
+                SetName={SetName}
+                surname={surname}
+                SetSurname={SetSurname}
+                year={year}
+                SetYear={SetYear}
               />
-              <Form.Control
-                onChange={(e) => SetSurname(e.target.value)}
-                value={surname}
-                required
-                className="mb-2 mt-2"
-                type="text"
-                placeholder="Surname"
+              <Username
+                email={email}
+                SetEmail={SetEmail}
+                password={password}
+                SetPassword={SetPassword}
+                confirmPassword={confirmPassword}
+                SetConfirmPassword={SetConfirmPassword}
               />
-              <Form.Control
-                onChange={(e) => SetEmail(e.target.value)}
-                value={email}
-                required
-                className="mb-2 mt-2"
-                type="email"
-                placeholder="Email"
+              <Address
+                street={street}
+                SetStreet={SetStreet}
+                city={city}
+                SetCity={SetCity}
+                postCode={postCode}
+                SetPostCode={SetPostCode}
               />
-              <Form.Control
-                onChange={(e) => SetPassword(e.target.value)}
-                value={password}
-                required
-                className="mb-2 mt-2"
-                type="password"
-                placeholder="Password"
-              />
-              <Form.Control
-                onChange={(e) => SetConfirmPassword(e.target.value)}
-                value={confirmPassword}
-                required
-                className="mb-2 mt-2"
-                type="password"
-                placeholder="Password Confirm"
-              />
-              <Form.Control
-                onChange={(e) => SetYear(e.target.value)}
-                value={year}
-                required
-                className="mb-2 mt-2"
-                type="date"
-                placeholder="Year of Birth"
-              />
-              <Form.Control
-                onChange={(e) => SetStreet(e.target.value)}
-                value={street}
-                required
-                className="mb-2 mt-2"
-                type="text"
-                placeholder="Address"
-              />
-              <Form.Control
-                onChange={(e) => SetCity(e.target.value)}
-                value={city}
-                required
-                className="mb-2 mt-2"
-                type="text"
-                placeholder="City"
-              />
-              <Form.Control
-                onChange={(e) => SetPostCode(e.target.value)}
-                value={postCode}
-                required
-                className="mb-2 mt-2"
-                type="number"
-                placeholder="Post Code"
-              />
-              <Form.Control
-                onChange={(e) => SetCardNr(e.target.value)}
-                value={cardNr}
-                required
-                className="mb-2 mt-2"
-                type="number"
-                placeholder="Credit Card"
-              />
+              <Card cardNr={cardNr} SetCardNr={SetCardNr} />
+              <Button type="submit" variant="primary">
+                Submit
+              </Button>
             </Form.Group>
-            <Button type="submit" variant="primary">
-              Submit
-            </Button>
           </Form>
         </Col>
       </Row>

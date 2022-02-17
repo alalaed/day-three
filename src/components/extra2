@@ -1,113 +1,97 @@
-import { Component } from "react";
-import { Modal, Alert, Button, ListGroup, Badge, Form } from "react-bootstrap";
-
-class CommentArea extends Component {
-  state = {
-    comments: {
-      comment: "",
-      rate: "",
-      elementId: "",
-    },
-
-    previousComments: [],
-  };
-
-  getApi = async () => {
-    let httpFetch =
-      "https://striveschool-api.herokuapp.com/api/comments/" +
-      this.props.chosenId;
-    try {
-      let response = await fetch(httpFetch, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
-        },
-      });
-      if (response.ok) {
-        let data = await response.json();
-        this.setState({ ...this.state, previousComments: data });
-        console.log(this.state.previousComments);
-      } else {
-        <Alert variant="danger">OOPS!!!</Alert>;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  componentDidMount = async () => {
-    this.getApi();
-  };
-
-  componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.chosenId !== this.props.chosenId) {
-      this.getApi();
-    }
-  };
-
-  handleSubmit = (e) => {
-    // e.preventDefault();
-    let httpFetch = "https://striveschool-api.herokuapp.com/api/comments/";
-    fetch(httpFetch, {
-      method: "POST",
-      body: JSON.stringify({
-        comment: this.state.comment,
-        rate: this.state.rate,
-        elementId: this.props.chosenId,
-      }),
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjM5OTgyZWExZDAwMTViYjAzZTkiLCJpYXQiOjE2NDM3OTk0NTAsImV4cCI6MTY0NTAwOTA1MH0.5dZKYBo7eP4on-pcM8VC0B42JNHHlwPOAqk70FWRG1M",
-        "Content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
-
-  render() {
-    return (
-      <Modal.Dialog>
-        <Modal.Header closeButton>
-          <Modal.Title>Reviews</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <ListGroup>
-            {this.state.previousComments.map((comment) => (
-              <ListGroup.Item key={comment._id}>
-                {comment.comment}
-                <Badge variant="primary" pill>
-                  {comment.rate}
-                </Badge>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-
+<Container>
+  <Row>
+    <Col>
+      <Form>
+        <Form.Group
+          onSubmit={() => handleSubmit()}
+          className="mb-3"
+          controlId="exampleForm.ControlInput1"
+        >
           <Form.Control
+            onChange={(e) => SetName(e.target.value)}
+            value={name}
+            required
+            className="mb-2 mt-2"
             type="text"
-            placeholder="comment"
-            value={this.state.comment}
-            onChange={(e) =>
-              this.setState({ ...this.state, comment: e.target.value })
-            }
+            placeholder="Name"
           />
           <Form.Control
+            onChange={(e) => SetSurname(e.target.value)}
+            value={surname}
+            required
+            className="mb-2 mt-2"
             type="text"
-            placeholder="rate"
-            value={this.state.rate}
-            onChange={(e) =>
-              this.setState({ ...this.state, rate: e.target.value })
-            }
+            placeholder="Surname"
           />
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="primary" onClick={(e) => this.handleSubmit(e)}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal.Dialog>
-    );
-  }
-}
-export default CommentArea;
+          <Form.Control
+            onChange={(e) => SetEmail(e.target.value)}
+            value={email}
+            required
+            className="mb-2 mt-2"
+            type="email"
+            placeholder="Email"
+          />
+          <Form.Control
+            onChange={(e) => SetPassword(e.target.value)}
+            value={password}
+            required
+            className="mb-2 mt-2"
+            type="password"
+            placeholder="Password"
+          />
+          <Form.Control
+            onChange={(e) => SetConfirmPassword(e.target.value)}
+            value={confirmPassword}
+            required
+            className="mb-2 mt-2"
+            type="password"
+            placeholder="Password Confirm"
+          />
+          <Form.Control
+            onChange={(e) => SetYear(e.target.value)}
+            value={year}
+            required
+            className="mb-2 mt-2"
+            type="date"
+            placeholder="Year of Birth"
+          />
+          <Form.Control
+            onChange={(e) => SetStreet(e.target.value)}
+            value={street}
+            required
+            className="mb-2 mt-2"
+            type="text"
+            placeholder="Address"
+          />
+          <Form.Control
+            onChange={(e) => SetCity(e.target.value)}
+            value={city}
+            required
+            className="mb-2 mt-2"
+            type="text"
+            placeholder="City"
+          />
+          <Form.Control
+            onChange={(e) => SetPostCode(e.target.value)}
+            value={postCode}
+            required
+            className="mb-2 mt-2"
+            type="number"
+            placeholder="Post Code"
+          />
+          <Form.Control
+            onChange={(e) => SetCardNr(e.target.value)}
+            value={cardNr}
+            required
+            className="mb-2 mt-2"
+            type="number"
+            placeholder="Credit Card"
+          />
+        </Form.Group>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </Form>
+    </Col>
+  </Row>
+</Container>;
