@@ -1,7 +1,8 @@
 import { useState } from "react";
 import SingleBook from "./SingleBook";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import CommentArea from "./CommentArea";
+import { useNavigate } from "react-router-dom";
 
 const BookList = ({ array }) => {
   // state = {
@@ -11,6 +12,7 @@ const BookList = ({ array }) => {
 
   const [query, setQuery] = useState("");
   const [id, setID] = useState(null);
+  const navigate = useNavigate();
 
   const changeId = (bookId) => {
     // this.setState({ ...this.state, id: bookId });
@@ -51,6 +53,9 @@ const BookList = ({ array }) => {
         </Col>
         <Col xs={3}>
           <CommentArea id={id} />
+          <Button variant="primary" onClick={(e) => navigate("/registration")}>
+            Registration
+          </Button>
         </Col>
       </Row>
     </Container>

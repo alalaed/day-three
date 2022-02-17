@@ -5,14 +5,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import books from "../src/data/horror.json";
 // import SingleBook from "./components/SingleBook";
 import BookList from "./components/BookList";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Registration from "./components/Registration";
 
 function App() {
   return (
     <div className="App">
-      {/* <WarningSign string="Ali" />
-      <MyBadge text="hi Ali" color="primary" /> */}
-
-      <BookList array={books} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/" element={<BookList array={books} />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
