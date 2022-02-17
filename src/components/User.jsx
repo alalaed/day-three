@@ -4,7 +4,13 @@ const User = ({ name, SetName, surname, SetSurname, year, SetYear }) => {
   return (
     <>
       <Form.Control
-        onChange={(e) => SetName(e.target.value)}
+        style={{
+          border: name.length < 3 ? "1px solid red" : "1px solid black",
+        }}
+        onChange={(e) => {
+          SetName(e.target.value);
+          console.log("isItShort");
+        }}
         value={name}
         required
         className="mb-2 mt-2"
@@ -12,6 +18,9 @@ const User = ({ name, SetName, surname, SetSurname, year, SetYear }) => {
         placeholder="Name"
       />
       <Form.Control
+        style={{
+          border: surname.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetSurname(e.target.value)}
         value={surname}
         required
@@ -20,6 +29,9 @@ const User = ({ name, SetName, surname, SetSurname, year, SetYear }) => {
         placeholder="Surname"
       />
       <Form.Control
+        style={{
+          border: year < 1910 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetYear(e.target.value)}
         value={year}
         required

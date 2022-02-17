@@ -11,6 +11,9 @@ const Username = ({
   return (
     <>
       <Form.Control
+        style={{
+          border: email.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetEmail(e.target.value)}
         value={email}
         required
@@ -19,6 +22,9 @@ const Username = ({
         placeholder="Email"
       />
       <Form.Control
+        style={{
+          border: password.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetPassword(e.target.value)}
         value={password}
         required
@@ -27,6 +33,10 @@ const Username = ({
         placeholder="Password"
       />
       <Form.Control
+        style={{
+          border:
+            confirmPassword.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetConfirmPassword(e.target.value)}
         value={confirmPassword}
         required

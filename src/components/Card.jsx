@@ -4,6 +4,9 @@ const Card = (cardNr, SetCardNr) => {
   return (
     <>
       <Form.Control
+        style={{
+          border: cardNr.length < 10 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetCardNr(e.target.value)}
         value={cardNr}
         required

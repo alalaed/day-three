@@ -11,6 +11,9 @@ const Address = ({
   return (
     <>
       <Form.Control
+        style={{
+          border: street.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetStreet(e.target.value)}
         value={street}
         required
@@ -19,6 +22,9 @@ const Address = ({
         placeholder="Address"
       />
       <Form.Control
+        style={{
+          border: city.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetCity(e.target.value)}
         value={city}
         required
@@ -27,6 +33,9 @@ const Address = ({
         placeholder="City"
       />
       <Form.Control
+        style={{
+          border: postCode.length < 3 ? "1px solid red" : "1px solid black",
+        }}
         onChange={(e) => SetPostCode(e.target.value)}
         value={postCode}
         required
