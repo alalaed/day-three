@@ -5,7 +5,7 @@ const User = ({ name, SetName, surname, SetSurname, year, SetYear }) => {
     <>
       <Form.Control
         style={{
-          border: name.length < 3 ? "1px solid red" : "1px solid black",
+          border: name.length < 2 ? "1px solid red" : "1px solid black",
         }}
         onChange={(e) => {
           SetName(e.target.value);
@@ -36,7 +36,7 @@ const User = ({ name, SetName, surname, SetSurname, year, SetYear }) => {
         value={year}
         required
         className="mb-2 mt-2"
-        type="date"
+        type="text"
         placeholder="Year of Birth"
       />
     </>

@@ -18,19 +18,7 @@ const Registration = () => {
   const [cardNr, SetCardNr] = useState("");
   const [isFormValidated, setIsFormValidated] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log(event.currentTarget.checkValidity());
-    if (event.currentTarget.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    //   if(name.name.length<2){
-    //       SetName({...name, isNameInvalid:true})
-    //   }
-    // setIsFormValidated(true);
-  };
+  const handleSubmit = (event) => {};
   return (
     <Container>
       <Row>
@@ -46,7 +34,7 @@ const Registration = () => {
                 year={year}
                 SetYear={SetYear}
               />
-              {/* <Username
+              <Username
                 email={email}
                 SetEmail={SetEmail}
                 password={password}
@@ -61,7 +49,7 @@ const Registration = () => {
                 SetCity={SetCity}
                 postCode={postCode}
                 SetPostCode={SetPostCode}
-              /> */}
+              />
               <Card cardNr={cardNr} SetCardNr={SetCardNr} />
               <Button type="submit" variant="primary">
                 Submit
